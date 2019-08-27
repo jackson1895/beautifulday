@@ -1,0 +1,75 @@
+data:
+    caption_json: /media/ext1/gaoliqing/cslt/json_file_split1/caption.json
+    info_json: /media/ext1/gaoliqing/cslt/json_file_split1/info.json
+    input_json: /media/ext1/gaoliqing/cslt/json_file_split1/train-val.json
+    feats_dir: /media/ext1/gaoliqing/dataset/5000video_features
+    name: /home/ext1/split1_exp
+    exp_name: transducer
+    max_input_length: 652
+    max_target_length: 10
+    batch_size: 20
+    shuffle: True
+    encoding: True
+    short_first: True
+    text_flag: text.char
+model:
+    type: transducer
+    fir_enc:
+      input_size: 2048
+      type: lstm
+      duration: 8
+      hidden_size: 1024
+      n_layers: 1
+      bidirectional: True
+      dropout_p: 0.3
+      self_attention:
+        input_size: 2048
+        output_size: 2048
+    enc:
+        type: lstm
+        hidden_size: 2048
+        output_size: 180
+        n_layers: 1
+        bidirectional: True
+        dropout_p: 0.3
+    dec:
+        type: lstm
+        hidden_size: 512
+        output_size: 180
+        n_layers: 1
+        dropout_p: 0.3
+        vocab_size: 180
+        share_weight: False
+    joint:
+        input_size: 360
+        inner_size: 512
+    vocab_size: 180
+    share_weight: False
+    feature_dim: 2048
+    fir_enc_or_not: True
+    alpha: 0.8
+training:
+    gpu: '0' #gpu的编号
+    load_model: False
+    load_encoder: False
+    load_decoder: False
+    model_path: /media/ext1/exp/cnn_rnnt_duration_8_maxlength_10_selfattn_step40_layer_normalization_3e-4_one2many_predec/rnnt/rnnt.epoch98.chkpt
+    encoder_path: xxx
+    decoder_path: /media/ext1/gaoliqing/model_0820_2.ckpt
+    eval_or_not: True
+    seed: 1234
+    num_gpu: 1 #gpu的个数
+    epochs: 1000
+    max_grad_norm: 5
+    visualization: True
+    show_interval: 100
+    save_model: d8_m10_selfattn_s8_1e-4_o2o_outputsize180
+    eval_fre: 1
+
+optim:
+    type: adam
+    lr: 0.0001
+    gamma: 0.6
+    weight_decay: 0.0005
+    step_size: 8
+
